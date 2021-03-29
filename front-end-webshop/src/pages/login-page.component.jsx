@@ -1,7 +1,11 @@
-import { useFormik } from "formik";
+import { Formik } from "formik";
 
-const Login = () => {
-  return <div></div>;
+const LoginPage = () => {
+  return (
+    <div>
+      <Formik></Formik>
+    </div>
+  );
 };
 
-export default Login;
+export default LoginPage;
