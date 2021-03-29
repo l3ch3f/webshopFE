@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Webshop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles/index.css}">
+    <style>
+        .imgProduct {
+            height: 200px;
+            width: 300px
+        }
+
+        .specs {
+            height: 100%;
+            width: 300px;
+        }
+
+        .description {
+            position: relative;
+            right: 200px;
+            height: 500px;
+        }
+
+        .quantityHandler {
+            width: 120px
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NavBar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class='container mt-2 text-center'>
+        <h1>Welkom op de L3Ch3f's WebShop</h1>
+    </div>
+    <!--Products -->
+    <section>
+        <div class="container">
+            <div class="container d-flex align-content-between">
+                <div th:each="product: ${listProducts}" class="container mt-2 row justify-content-between">
+                    <div class="container d-flex flex-column mx-3 col-4">
+                        <a th:href="'/product/'+${product.id}">
+                            <img class="imgProduct" th:src="${product.imgUrl}" alt="laptop">
+                        </a>
+                        <h5 class="productName" th:text="${product.productName}">Text for product</h5>
+                        <h5 class="productPrice" th:text="&#8364+ ' ' +${product.price}">Price</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
+        </script>
+    <script>
+        const timeToExpire = (1000 * 60 * 60 * 4);
+        const now = new Date();
+        const getFromLocalStorage = (name) => {
+            const itemName = localStorage.getItem(name);
+            // If item doesnt exist
+
+            if (!itemName) {
+                return "Something Wong!"
+            }
+            const item = JSON.parse(itemName)
+            // compare expiry time of the item with the current time
+            if (now.getTime() > item.expiry) {
+                // if item is expired, delete the item from storage
+                // and return null
+                localStorage.setItem(name, "")
+                return null
+            }
+            return item.value
+        }
+        const setToLocalStorage = () => {
+            const item = {
+                value: "[[${token}]]",
+                expiry: now.getTime() + timeToExpire,
+            }
+            localStorage.setItem("token", JSON.stringify(item));
+        }
+        const token = getFromLocalStorage("token")
+        if(!token || token==null || token==""|| token==undefined || token=="Something Wong!") {
+            setToLocalStorage();
+        }
+    </script>
+</body>
+
+</html>

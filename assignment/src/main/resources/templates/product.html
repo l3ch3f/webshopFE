@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Webshop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles/index.css}">
+    <style>
+        .imgProduct {
+            height: 200px;
+            width: 300px
+        }
+
+        .specs {
+            height: 100%;
+            width: 300px;
+        }
+
+        .description {
+            position: relative;
+            right: 100px;
+            height: 500px;
+        }
+
+        .quantityHandler {
+            width: 120px
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NavBar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class='container mt-2 text-center'>
+        <h1>Welkom op de L3Ch3f's WebShop</h1>
+    </div>
+    <section>
+        <div class="container">
+            <div class="container d-flex">
+                <div class="container">
+                    <div class="container d-flex flex-column">
+                        <img class="imgProduct" th:src="${product.imgUrl}" alt="laptop">
+                        <h5 class="productName" th:text="${product.productName}">Text for product</h5>
+                        <h5 class="productPrice" th:text="${product.price}">Price</h5>
+                    </div>
+                    <div class="border border-primary specs">
+                        <table class="table table-warning table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Specification</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Producer:</td>
+                                    <td th:text="${product.producer}"></td>
+                                </tr>
+                                <tr>
+                                    <td>type:</td>
+                                    <td th:text="${specs.type}"></td>
+                                </tr>
+                                <tr>
+                                    <td>productModel:</td>
+                                    <td th:text="${specs.productModel}"></td>
+                                </tr>
+                                <tr>
+                                    <td>internMemory:</td>
+                                    <td th:text="${specs.internMemory}"></td>
+                                </tr>
+                                <tr>
+                                    <td>screenSize:</td>
+                                    <td th:text="${specs.screenSize}"></td>
+                                </tr>
+                                <tr>
+                                    <td>processorType:</td>
+                                    <td th:text="${specs.processorType}"></td>
+                                </tr>
+                                <tr>
+                                    <td>codename:</td>
+                                    <td th:text="${specs.codename}"></td>
+                                </tr>
+                                <tr>
+                                    <td>graphicCard:</td>
+                                    <td th:text="${specs.graphicCard}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="container border border-success description">
+                    <div>
+                        <h5>Description:</h5>
+                        <p th:text="${product.description}">Tralala</p>
+                    </div>
+                    <div>
+                        <div>
+                            <p>
+                                <strong>In Stock: </strong><span
+                                    th:text="${product.stockList.stockQuantity}">Stocklist</span>
+
+                            </p>
+                        </div>
+                        <div class="d-flex">
+                            <div class="input-group my-3 quantityHandler">
+                                <button class="btn btn-outline-secondary" type="button">-</button>
+                                <input type="text" id="quantity[number]"class="form-control" placeholder=""
+                                    aria-label="Example text with two button addons">
+                                <button class="btn btn-outline-secondary" type="button">+</button>
+                            </div>
+                            <button id="btn[shoppingCart]" onclick="addToCart()">Add to ShoppingCart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+    <script>
+        const timeToExpire = (1000 * 60 * 60 * 4);
+        const now = new Date();
+        const getFromLocalStorage = (name) => {
+            const itemName = localStorage.getItem(name);
+            // If item doesnt exist
+
+            if (!itemName) {
+                return "Something Wong!"
+            }
+            const item = JSON.parse(itemName)
+            // compare expiry time of the item with the current time
+            if (now.getTime() > item.expiry) {
+                // if item is expired, delete the item from storage
+                // and return null
+                localStorage.setItem(name, "")
+                return null
+            }
+            return item.value
+        }
+        const setToLocalStorage = () => {
+            const item = {
+                value: "[[${new_token}]]",
+                expiry: now.getTime() + timeToExpire,
+            }
+            localStorage.setItem("token", JSON.stringify(item));
+        }
+        const token = getFromLocalStorage("token")
+
+        if (!token || token == null || token == "" || token == undefined || token == "Something Wong!") {
+            setToLocalStorage();
+        }
+    </script>
+    <script>
+        const url = 'http://localhost:8081'
+       
+        const addToCart = () => {
+            const token = getFromLocalStorage("token");
+            const quantity = parseInt( document.getElementById('quantity[number]').value);
+            const data ={
+                token: token,
+                quantity: quantity,
+                productId: "[[${product.id}]]",
+                productName: "[[${product.productName}]]"
+            }
+            const jsonData = JSON.stringify(data);
+             const otherParam = {
+                headers: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+                body: jsonData,
+                method: "POST"
+            };
+            fetch(url+'/addCart', otherParam)
+            .then(data=>{return data.json()})
+            .then(res=>{console.log(res)})
+            .catch(err=>console.log(err))
+        }
+    </script>
+</body>
+
+</html>
