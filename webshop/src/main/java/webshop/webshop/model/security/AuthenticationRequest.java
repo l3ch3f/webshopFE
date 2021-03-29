@@ -1,23 +1,8 @@
-package webshop.webshop.model;
+package webshop.webshop.model.security;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name="users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AuthenticationRequest {
     private String email;
     private String password;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;
