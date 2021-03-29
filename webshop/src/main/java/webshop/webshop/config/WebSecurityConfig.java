@@ -21,10 +21,8 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
     private DataSource dataSource;
-
     @Autowired
     public UserService userService;
     @Bean
