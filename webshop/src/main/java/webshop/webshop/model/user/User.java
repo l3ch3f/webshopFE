@@ -2,6 +2,7 @@ package webshop.webshop.model.user;
 
 import javax.persistence.*;
 
+// Users entity
 @Entity
 @Table(name="users")
 public class User {
