@@ -14,6 +14,7 @@ import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 
+// For confirming jwt when http request is done
 public class JwtValidator {
     public Authentication doFilterInternal(HttpServletRequest request) {
         String jwt = request.getHeader(SecurityConstants.JWT_HEADER);
