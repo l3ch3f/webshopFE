@@ -13,16 +13,12 @@ import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import javax.crypto.SecretKey;
-import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
 
+
+// generate jwt for validation
 public class JwtGenerate {
     @Autowired
     UserService service;
-
-
-
 
     public String makeToken(AuthenticationRequest authenticationRequest, HttpServletResponse response, Optional<User> users, String jwt) {
         User user = service.findByEmail(authenticationRequest.getEmail());
